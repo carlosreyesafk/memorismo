@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria - Demon Slayer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <video autoplay muted loop id="bgVideo">
+        <source src="demonslayer.mp4" type="video/mp4">
+    </video>
+
+    <div id="startScreen" class="screen">
+        <h1>Juego de Memoria - Demon Slayer</h1>
+        <div class="difficulty-container">
+            <p>Elige la dificultad:</p>
+            <div class="button-container">
+                <button class="difficulty-btn" data-difficulty="facil">Fácil</button>
+                <button class="difficulty-btn" data-difficulty="medio">Medio</button>
+                <button class="difficulty-btn" data-difficulty="dificil">Difícil</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="gameScreen" class="screen hidden">
+        <div class="game-header">
+            <h1>Juego de Memoria - Demon Slayer</h1>
+            <div id="timer">Tiempo restante: 60s</div>
+            <button id="backToMenu">Volver al Menú</button>
+        </div>
+        <div id="gameBoard"></div>
+    </main>
+
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Game Over...🤭</h2>
+            <img src="gameover.gif" alt="Game Over GIF" class="modal-gif">
+            <div class="modal-buttons">
+                <button id="restartGameOver">Reiniciar Juego</button>
+                <button id="closeGameOver">Cerrar Juego</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="winnerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>¡Has Ganado! 👍✅</h2>
+            <div class="modal-buttons">
+                <button id="restartWinner">Reiniciar Juego</button>
+                <button id="closeWinner">Cerrar Juego</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
