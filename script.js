@@ -1,11 +1,13 @@
 // Character array
-const allCharacters = ['tanjiro', 'nezuko', 'zenitsu', 'inosuke', 'giyu', 'shinobu', 'kanao', 'rengoku', 'muzan', 'akaza', 'rui', 'tamayo'];
+const allCharacters = ['Ace', 'Shanks', 'Shirohige', 'Trafalgar law', 'Usopp', 'Uta', 'Yamato', 'Yonkou', 'Yonkou', 'Yonkou', 'Yonkou', 'Yonkou'];
 
 // DOM Elements
 const startScreen = document.getElementById('startScreen');
 const gameScreen = document.getElementById('gameScreen');
 const gameBoard = document.getElementById('gameBoard');
 const timerElement = document.getElementById('timer');
+const scoreElement = document.createElement('div');
+const levelElement = document.createElement('div');
 const gameOverModal = document.getElementById('gameOverModal');
 const winnerModal = document.getElementById('winnerModal');
 const closeGameOverModal = document.querySelector('#gameOverModal .close');
@@ -25,6 +27,8 @@ let timer;
 let timeRemaining;
 let characters;
 let currentDifficulty;
+let score = 0;
+let level = 1;
 
 // Difficulty settings
 const difficulties = {
@@ -42,6 +46,17 @@ function startGame(difficulty) {
     const { pairs, time, rows, cols } = difficulties[difficulty];
     characters = allCharacters.slice(0, pairs);
     timeRemaining = time;
+    score = 0;
+    level = 1;
+
+    // Add score and level elements
+    const gameHeader = document.querySelector('.game-header');
+    scoreElement.id = 'score';
+    levelElement.id = 'level';
+    gameHeader.appendChild(scoreElement);
+    gameHeader.appendChild(levelElement);
+    updateScore();
+    updateLevel();
 
     createBoard(rows, cols);
 }
@@ -66,7 +81,7 @@ function createBoard(rows, cols) {
         card.addEventListener('click', flipCard);
 
         const img = document.createElement('img');
-        img.src = `images/${character}.jpg`;
+        img.src = `images/${character}.png`;
         img.alt = character;
 
         card.appendChild(img);
@@ -118,18 +133,48 @@ function checkForMatch() {
 
     if (isMatch) {
         matchedPairs++;
+        score += 10 * level; // Increase score based on level
+        updateScore();
         if (matchedPairs === characters.length) {
             clearInterval(timer);
-            setTimeout(() => showModal(winnerModal), 500);
+            setTimeout(() => {
+                if (level < 3) {
+                    level++;
+                    updateLevel();
+                    startNextLevel();
+                } else {
+                    showModal(winnerModal);
+                }
+            }, 500);
         }
     } else {
         setTimeout(() => {
             card1.classList.remove('flipped');
             card2.classList.remove('flipped');
         }, 1000);
+        score = Math.max(0, score - 1); // Decrease score, but not below 0
+        updateScore();
     }
 
     flippedCards = [];
+}
+
+// Function to start the next level
+function startNextLevel() {
+    const { pairs, time, rows, cols } = difficulties[currentDifficulty];
+    characters = allCharacters.slice(0, pairs + 2 * (level - 1)); // Increase number of pairs
+    timeRemaining = Math.max(30, time - 15 * (level - 1)); // Decrease time, but not below 30 seconds
+    createBoard(rows, cols);
+}
+
+// Function to update the score display
+function updateScore() {
+    scoreElement.textContent = `Puntuación: ${score}`;
+}
+
+// Function to update the level display
+function updateLevel() {
+    levelElement.textContent = `Nivel: ${level}`;
 }
 
 // Function to show modal
@@ -142,11 +187,22 @@ function hideModal(modal) {
     modal.style.display = 'none';
 }
 
+function restartGame() {
+    hideModal(gameOverModal);
+    hideModal(winnerModal);
+    startGame(currentDifficulty);
+}
+
 // Function to return to menu
 function backToMenu() {
     clearInterval(timer);
+    hideModal(gameOverModal);
+    hideModal(winnerModal);
     gameScreen.classList.add('hidden');
     startScreen.classList.remove('hidden');
+    // Remove score and level elements
+    scoreElement.remove();
+    levelElement.remove();
 }
 
 // Event listeners
@@ -158,4 +214,23 @@ backToMenuButton.addEventListener('click', backToMenu);
 
 closeGameOverModal.onclick = () => hideModal(gameOverModal);
 closeWinnerModal.onclick = () => hideModal(winnerModal);
-restartGameOverButton.onclick = restartWinnerButton.onclick = () => startGame(currentDifficulty);
+restartGameOverButton.onclick = restartWinnerButton.onclick = restartGame;
+closeGameOverButton.onclick = closeWinnerButton.onclick = backToMenu;
+
+// Special effect: Reveal all cards for 1 second
+function revealAllCards() {
+    cards.forEach(card => card.classList.add('flipped'));
+    setTimeout(() => {
+        cards.forEach(card => {
+            if (!card.classList.contains('matched')) {
+                card.classList.remove('flipped');
+            }
+        });
+    }, 1000);
+}
+
+// Add a button for the special effect
+const specialEffectButton = document.createElement('button');
+specialEffectButton.textContent = 'Revelar Cartas';
+specialEffectButton.addEventListener('click', revealAllCards);
+document.querySelector('.game-header').appendChild(specialEffectButton);
