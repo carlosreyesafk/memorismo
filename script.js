@@ -1,5 +1,5 @@
 // Character array
-const allCharacters = ['Ace', 'Shanks', 'Shirohige', 'Trafalgar law', 'Usopp', 'Uta', 'Yamato', 'Yonkou', 'Yonkou', 'Yonkou', 'Yonkou', 'Yonkou'];
+const allCharacters = ['Ace', 'Shanks', 'Shirohige', 'Trafalgar law', 'Usopp', 'Uta', 'Yamato', 'robin', 'chopper', 'brook', 'nami', 'nami2'];
 
 // DOM Elements
 const startScreen = document.getElementById('startScreen');
