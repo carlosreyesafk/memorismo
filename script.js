@@ -232,5 +232,6 @@ function revealAllCards() {
 // Add a button for the special effect
 const specialEffectButton = document.createElement('button');
 specialEffectButton.textContent = 'Revelar Cartas';
+specialEffectButton.classList.add('revelar-cartas');
 specialEffectButton.addEventListener('click', revealAllCards);
 document.querySelector('.game-header').appendChild(specialEffectButton);
