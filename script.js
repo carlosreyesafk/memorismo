@@ -138,13 +138,13 @@ function checkForMatch() {
         if (matchedPairs === characters.length) {
             clearInterval(timer);
             setTimeout(() => {
-                if (level < 3) {
-                    level++;
-                    updateLevel();
-                    startNextLevel();
-                } else {
+                // if (level < 2) {
+                //     level++;
+                //     updateLevel();
+                //     startNextLevel();
+                // } else {
                     showModal(winnerModal);
-                }
+                // }
             }, 500);
         }
     } else {

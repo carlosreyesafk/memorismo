@@ -30,7 +30,7 @@ body {
 
 /* Estilos de las pantallas */
 .screen {
-    background-color: rgba(0, 0, 0, 0.7);
+    /* background-color: rgba(0, 0, 0, 0.7); */
     padding: 20px;
     border-radius: 15px;
     text-align: center;
